@@ -1,6 +1,6 @@
 ## Fort script in go
 
-his is a subset of the Forth language, written for a Coding KATA.
+This is a subset of the Forth language, written for a Coding KATA.
 
 The code has some test coverage, and I've split it into smaller chunks.
 

@@ -1,10 +1,12 @@
 ## Fort script in go
 
 This is a subset of forth language written for Coding KATA.
+
 The code have some test coverage, and I've spitted up into smaller chunks.
+
 It could be solved with a smaller code. The reasoning behind is to follow the methodology how scripting languages are working.
 
-the workflow.
+### The workflow.
 1. Lexer -> tokenize the source code
 2. Generate AST tree (The Abstract Syntax Tree) 
 3. interpret, evaluating and running the code (AST)

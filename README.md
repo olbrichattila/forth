@@ -82,7 +82,7 @@ Example
 ```
 
 Note:
-I've experimented with creating a script language before, so here is a more complex example in my github account
+I've experimented some time ago with creating a script language before, so here is a more complex example in my github account
 (note some refactoring code cleaning required, just experiment)
 
 https://github.com/olbrichattila/goscriptinglanguage

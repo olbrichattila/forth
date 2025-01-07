@@ -53,15 +53,12 @@ func (t *tokenizer) Tokenize(code string) ([]Token, error) {
 		}
 
 		if val, ok := t.parseNameToken(); ok {
-			if tk, ok := tokens[val]; ok {
-				result = append(result, Token{t: tk, value: val})
-			} else {
-				result = append(result, Token{t: TokenTypeName, value: val})
-			}
+			result = append(result, t.resolveNameToken(val))
 	
 			continue
 		}
 
+		// it usually gets here for generic 1 character tokens like + - .
 		if tk, ok := tokens[char]; ok {
 			result = append(result, Token{t: tk, value: char})
 		}
@@ -70,6 +67,15 @@ func (t *tokenizer) Tokenize(code string) ([]Token, error) {
 	}
 
 	return result, nil;
+}
+
+func (t *tokenizer) resolveNameToken(tokenName string) Token {
+	// if asc code sequence is pre defined like dup, swap... return specific token
+	if tk, ok := tokens[tokenName]; ok {
+		return Token{t: tk, value: tokenName}
+	}
+
+	return  Token{t: TokenTypeName, value: tokenName}
 }
 
 func (t *tokenizer) parseIntToken() (string, bool) {

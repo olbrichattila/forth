@@ -1,25 +1,25 @@
 ## Fort script in go
 
-This is a subset of forth language written for Coding KATA.
+his is a subset of the Forth language, written for a Coding KATA.
 
-The code have some test coverage, and I've spitted up into smaller chunks.
+The code has some test coverage, and I've split it into smaller chunks.
 
-It could be solved with a smaller code. The reasoning behind is to follow the methodology how scripting languages are working.
+It could be solved with less code. The reasoning behind this is to follow the methodology of how scripting languages work.
 
 ### The workflow.
-1. Lexer -> tokenize the source code
-2. Generate AST tree (The Abstract Syntax Tree) 
-3. interpret, evaluating and running the code (AST)
+1. Lexer: Tokenizes the source code.
+2. AST Generation: Creates an Abstract Syntax Tree (AST).
+3. Interpreter: Evaluates and executes the code represented by the AST.
 
 ### Tokenizing:
-the lexical analyzer main purpose is to break down raw source code into manageable pieces called tokens
+The main purpose of the lexical analyzer is to break down raw source code into manageable pieces called tokens.
 
-### AST tree
-The Abstract Syntax Tree (AST) is a fundamental data structure used in programming language interpreters and compilers.
-Its primary purpose is to provide a structured, hierarchical representation of the source code that is easier to analyze and manipulate than raw text or tokens.
+### Abstract Syntax Tree (AST)
+The Abstract Syntax Tree (AST) is a crucial data structure used in programming language interpreters and compilers. Its primary purpose is to provide a structured, hierarchical representation of the source code, making it easier to analyze and manipulate compared to raw text or tokens.
 
 ### Interpreter
-Executes the AST tree, if necessary in a recursive way using the node structure. In this example the word (function) encapsulates it's own AST tree.
+The interpreter executes the AST, often recursively, by traversing its node structure. In this example, each word (or function) encapsulates its own AST, enabling modular execution.
+
 
 ### It supports:
 ```
@@ -82,23 +82,21 @@ Example
 ```
 
 Note:
-I've experimented some time ago with creating a script language before, so here is a more complex example in my github account
-(note some refactoring code cleaning required, just experiment)
+I experimented with creating a scripting language some time ago, and here is a more complex example on my GitHub account. (Note: some refactoring and code cleaning are required, as this was just an experiment.)
 
 https://github.com/olbrichattila/goscriptinglanguage
 
-this is a more complex example:
-- complex mathematical expression evaluation: example: 1 + 5 + 6 /2 * (15 - 2) 
-- variable declaration (including variable scope management) let foo = 1; 
-- constant declaration (including variable scope management) const x = 8; 
-- variable re assignments
-- complex object definition
-- internal functions
-- conditional expressions
-- if / else statement
-- for loop (different versions, like do while and for)
-- break
-- switch case
-- strings
-so far, maybe to be continued.
-
+This example includes the following features:
+- Complex mathematical expression evaluation (e.g., 1 + 5 + 6 / 2 * (15 - 2))
+- Variable declaration with scope management (e.g., let foo = 1;)
+- Constant declaration with scope management (e.g., const x = 8;)
+- Variable reassignments
+- Complex object definitions
+- Internal functions
+- Conditional expressions
+- if / else statements
+- Various for loop versions (e.g., do while and for)
+- break statements
+- switch / case statements
+- Strings
+So far, but it may be continued.

@@ -23,17 +23,17 @@ Executes the AST tree, if necessary in a recursive way using the node structure.
 
 ### It supports:
 ```
-	+ :  Add,
-	- : Sub,
-	* : Multiply,
-	dup : Dup,
-	drop : Drop,
-	swap : Swap,
-	. : Print,
-	: : Word (function),
-	; : End of function,
++ :  Add,
+- : Sub,
+* : Multiply,
+dup : Dup,
+drop : Drop,
+swap : Swap,
+. : Print,
+: : Word (function),
+; : End of function,
 
-    word (function declaration)
+word (function declaration)
 ```
 
 ### examples: 

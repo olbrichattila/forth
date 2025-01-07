@@ -46,19 +46,18 @@ type Builder interface {
 
 // New creates a new AST builder
 func New() Builder {
-	return &parser{}
+	return &build{}
 }
 
-type parser struct {
+type build struct {
 	tokens []lexer.Token
 	pos int
 }
 
 // Build convert tokens created with lexer to an AST tree
-func (p *parser) Build(tokens []lexer.Token) (*Ast, error) {
+func (p *build) Build(tokens []lexer.Token) (*Ast, error) {
 	p.tokens = tokens
 	Ast := &Ast{};
-	
 
 	for {
 		if p.eof() {
@@ -81,27 +80,26 @@ func (p *parser) Build(tokens []lexer.Token) (*Ast, error) {
 		}
 		
 		Ast.body = append(Ast.body, Node)
-		
 		p.pos++
 	}
 
 	return Ast, nil
 }
 
-func (p *parser) eof() bool {
+func (p *build) eof() bool {
 	return p.pos >= len(p.tokens) 
 }
 
-func (p *parser) next() lexer.Token {
+func (p *build) next() lexer.Token {
 	p.pos++;
 	return p.tokens[p.pos]
 }
 
-func (p *parser) at() lexer.Token {
+func (p *build) at() lexer.Token {
 	return p.tokens[p.pos]
 }
 
-func (p *parser) expect(tt lexer.TokenType) bool {
+func (p *build) expect(tt lexer.TokenType) bool {
 	if p.eof() {
 		return false
 	}
@@ -110,7 +108,7 @@ func (p *parser) expect(tt lexer.TokenType) bool {
 	return token.GetType() == tt
 }
 
-func (p *parser) parse(token lexer.Token) (Node, error) {
+func (p *build) parse(token lexer.Token) (Node, error) {
 	parsers := getParsers()
 	if result, ok := parsers[token.GetType()]; ok {
 		return result(p, token)

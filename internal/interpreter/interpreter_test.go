@@ -49,7 +49,6 @@ func (t *interpreterTestSuite) TestAstExecutes() {
 	astNodes.AddFunction("testFunc", functionNode)
 	astNodes.AddNode(&ast.NodeName{Name: "testFunc"})
 
-
 	err := t.interpreter.Execute(astNodes)
 	output := t.capturer.StopCapture()
 

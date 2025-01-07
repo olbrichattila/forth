@@ -33,7 +33,6 @@ func (t *nodeTestSuite) TestNodeDup() {
 	t.Equal(NodeTypeDup, node.GetType())
 }
 
-
 func (t *nodeTestSuite) TestNodeFunction() {
 	node := &NodeFunction{}
 	t.Equal(NodeTypeFunction, node.GetType())

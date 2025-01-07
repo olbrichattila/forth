@@ -1,4 +1,4 @@
-// Package main is the entry point, running the script
+// Package main is the entry point, running the script from file or prompt
 package main
 
 import (

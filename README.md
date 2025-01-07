@@ -1,6 +1,6 @@
 ## Fort script in go
 
-This is a subset of forth language written for Coding KATA, It supports:
+This is a subset of forth language written for Coding KATA.
 The code have some test coverage, and I've spitted up into smaller chunks.
 It could be solved with a smaller code. The reasoning behind is to follow the methodology how scripting languages are working.
 
@@ -19,7 +19,7 @@ Its primary purpose is to provide a structured, hierarchical representation of t
 ### Interpreter
 Executes the AST tree, if necessary in a recursive way using the node structure. In this example the word (function) encapsulates it's own AST tree.
 
-
+### It supports:
 ```
 	+ :  Add,
 	- : Sub,

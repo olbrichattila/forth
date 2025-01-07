@@ -1,6 +1,24 @@
 ## Fort script in go
 
 This is a subset of forth language written for Coding KATA, It supports:
+The code have some test coverage, and I've spitted up into smaller chunks.
+It could be solved with a smaller code. The reasoning behind is to follow the methodology how scripting languages are working.
+
+the workflow.
+1. Lexer -> tokenize the source code
+2. Generate AST tree (The Abstract Syntax Tree) 
+3. interpret, evaluating and running the code (AST)
+
+### Tokenizing:
+the lexical analyzer main purpose is to break down raw source code into manageable pieces called tokens
+
+### AST tree
+The Abstract Syntax Tree (AST) is a fundamental data structure used in programming language interpreters and compilers.
+Its primary purpose is to provide a structured, hierarchical representation of the source code that is easier to analyze and manipulate than raw text or tokens.
+
+### Interpreter
+Executes the AST tree, if necessary in a recursive way using the node structure. In this example the word (function) encapsulates it's own AST tree.
+
 
 ```
 	+ :  Add,

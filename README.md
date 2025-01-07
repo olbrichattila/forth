@@ -12,6 +12,8 @@ This is a subset of forth language written for Coding KATA, It supports:
 	. : Print,
 	: : Word (function),
 	; : End of function,
+
+    word (function declaration)
 ```
 
 ### examples: 
@@ -24,11 +26,12 @@ This is a subset of forth language written for Coding KATA, It supports:
 ```
 30
 1500
-``
+```
 
 ```
 10 20 + . 50 * .
 ```
+
 - Word: function Prints 20
 
 ```

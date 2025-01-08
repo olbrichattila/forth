@@ -20,32 +20,25 @@ type build struct {
 	pos int
 }
 
-// Build convert tokens created with lexer to an AST tree
+// Build constructs an AST from a slice of lexer tokens.
 func (p *build) Build(tokens []lexer.Token) (*Ast, error) {
 	p.tokens = tokens
 	ast := &Ast{};
 
-	for {
-		if p.eof() {
-			break;
-		}
-
+	for !p.eof() {
 		token := p.at()
-		Node, err := p.parse(token);
+		node, err := p.parse(token)
 		if err != nil {
 			return nil, err
 		}
-
+	
 		if token.GetType() == lexer.TokenTypeFunction {
-			if n, ok := Node.(*NodeFunction); ok {
-				ast.AddFunction(n.Name, Node)
+			if functionNode, ok := node.(*NodeFunction); ok {
+				ast.AddFunction(functionNode.Name, functionNode)
 			}
-
-			p.pos++;
-			continue
+		} else {
+			ast.body = append(ast.body, node)
 		}
-		
-		ast.body = append(ast.body, Node)
 		p.pos++
 	}
 

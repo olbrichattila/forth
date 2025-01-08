@@ -11,7 +11,7 @@ func New() *StdoutCapture {
 	return &StdoutCapture{}
 }
 
-// This captures what the code prints to the standard output
+// StdoutCapture captures what the code prints to the standard output
 type StdoutCapture struct {
 	originalStdout *os.File
 	r              *os.File

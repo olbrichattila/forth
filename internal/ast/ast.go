@@ -33,4 +33,3 @@ func (a *Ast) GetBody() []Node {
 func (a *Ast) GetFunctions() map[string]Node {
 	return a.functions
 }
-

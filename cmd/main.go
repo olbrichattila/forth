@@ -13,27 +13,35 @@ func main() {
 		err := runFile(os.Args[1])
 		if err != nil {
 			fmt.Println(err)
+			os.Exit(1)
 		}
 		return
 	}
 
-	runConsole()
+	err := runConsole()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 func runFile(filePath string) error {
-	code, err := LoadFileToString(filePath)
+	code, err := loadFileToString(filePath)
 	if err != nil {
-		return err
+		return fmt.Errorf("error running file '%s': %v", filePath, err)
 	}
 
 	return forth.Run(code)
 }
 
-func runConsole() {
+func runConsole() error {
 	scanner := bufio.NewScanner(os.Stdin)
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("error reading input: %v", err)
+	}
 
 	for {
-		fmt.Print("Run code (press Enter to quit): ")
+		fmt.Print("Enter code (or press Enter to exit): ")
 		if !scanner.Scan() {
 			break
 		}
@@ -47,17 +55,14 @@ func runConsole() {
 			fmt.Println(err.Error());
 		}
 	}
+
+	return nil
 }
 
-func LoadFileToString(filePath string) (string, error) {
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		return "", fmt.Errorf("file does not exist: %s", filePath)
-	}
-
-	content, err := os.ReadFile(filePath)
-	if err != nil {
-		return "", fmt.Errorf("failed to read file: %v", err)
-	}
-
-	return string(content), nil
+func loadFileToString(filePath string) (string, error) {
+    content, err := os.ReadFile(filePath)
+    if err != nil {
+        return "", fmt.Errorf("failed to read file '%s': %v", filePath, err)
+    }
+    return string(content), nil
 }

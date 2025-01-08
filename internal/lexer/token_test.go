@@ -16,7 +16,7 @@ func TestTokenRunner(t *testing.T) {
 
 func (t *tokenTestSuite) TestToken() {
 	expectedValue := "1234";
-	token := &Token{t: TokenTypeAdd, value: expectedValue}
+	token := newToken(TokenTypeAdd, expectedValue)
 
 	t.Equal(TokenTypeAdd, token.GetType())
 	t.Equal(expectedValue, token.GetValue())

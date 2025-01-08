@@ -2,6 +2,8 @@
 // The lexical analyzer main purpose is to break down raw source code into manageable pieces called tokens
 package lexer
 
+import "fmt"
+
 // Lexer abstracts the logic from the concrete implementation
 type Lexer interface {
 	Tokenize(code string) ([]Token, error)
@@ -29,77 +31,65 @@ type tokenizer struct {
 	pos int
 }
 
-// Tokenize will convert the source code to tokens
 func (t *tokenizer) Tokenize(code string) ([]Token, error) {
-	result := make([]Token, 0)
+    result := make([]Token, 0)
+    t.code = code
+    t.pos = 0
 
-	t.code = code;
-	t.pos = 0;
+    for t.pos < len(code) {
+        char := string(code[t.pos])
 
-	for {
-		if t.pos == len(code) {
-			break
-		}
+        if t.ignoreCharacter(char) {
+            t.pos++
+            continue
+        }
 
-		char := string(code[t.pos])
-		if t.ignoreCharacter(char) {
-			t.pos++;
-			continue
-		}
-		
-		if val, ok := t.parseIntToken(); ok {
-			result = append(result, Token{t: TokenTypeNumber, value: val})
-			continue
-		}
+        if intValue, ok := t.parseIntToken(); ok {
+            result = append(result, newToken(TokenTypeNumber, intValue))
+            continue
+        }
 
-		if val, ok := t.parseNameToken(); ok {
-			result = append(result, t.resolveNameToken(val))
-	
-			continue
-		}
+        if nameValue, ok := t.parseNameToken(); ok {
+            result = append(result, t.resolveNameToken(nameValue))
+            continue
+        }
 
-		// it usually gets here for generic 1 character tokens like + - .
-		if tk, ok := tokens[char]; ok {
-			result = append(result, Token{t: tk, value: char})
-		}
-		
-		t.pos++;
-	}
+        if tokenType, ok := tokens[char]; ok {
+            result = append(result, newToken(tokenType, char))
+            t.pos++
+            continue
+        }
 
-	return result, nil;
+        return nil, fmt.Errorf("unexpected character '%s' at position %d", char, t.pos)
+    }
+
+    return result, nil
 }
+
 
 func (t *tokenizer) resolveNameToken(tokenName string) Token {
 	// if asc code sequence is pre defined like dup, swap... return specific token
 	if tk, ok := tokens[tokenName]; ok {
-		return Token{t: tk, value: tokenName}
+		return newToken(tk, tokenName)
 	}
 
-	return  Token{t: TokenTypeName, value: tokenName}
+	return newToken(TokenTypeName, tokenName)
 }
 
 func (t *tokenizer) parseIntToken() (string, bool) {
-	num := ""
-	for {
-		if t.pos == len(t.code) || !t.isInt(string(t.code[t.pos])) {
-			return num, num != ""
-		}
-		
-		num += string(string(t.code[t.pos]))
-		t.pos++
-	}
+    start := t.pos
+    for t.pos < len(t.code) && t.isInt(string(t.code[t.pos])) {
+        t.pos++
+    }
+    return t.code[start:t.pos], t.pos > start
 }
 
 func (t *tokenizer) parseNameToken() (string, bool) {
-	result := ""
-	for {
-		if t.pos == len(t.code) || !t.isName(string(t.code[t.pos])) {
-			return result, result != ""
-		}
-		
-		result += string(string(t.code[t.pos]))
-		t.pos++
-	}
+    start := t.pos
+    for t.pos < len(t.code) && t.isName(string(t.code[t.pos])) {
+        t.pos++
+    }
+    return t.code[start:t.pos], t.pos > start
 }
 
 func (t *tokenizer) isInt(s string) bool {

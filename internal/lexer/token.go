@@ -25,18 +25,24 @@ const (
 	TokenEndFunc
 )
 
+// Initialize new token
+func newToken(t TokenType, v string) Token {
+    return Token{Type: t, Value: v}
+}
+
 // Token is a reference to a keyword, identifier, operator or literal
 type Token struct {
-	t TokenType
-	value string
+	Type TokenType
+	Value string
 }
+
 
 // GetType returns the token type
 func (t *Token) GetType() TokenType {
-	return t.t
+	return t.Type
 }
 
 // GetValue returns the token value
 func (t *Token) GetValue() string {
-	return t.value
+	return t.Value
 }

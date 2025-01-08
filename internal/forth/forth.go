@@ -1,30 +1,39 @@
-// Package forth is a simplified implementation of the forth language (Coding KATA)
-// This package orchestrates tokenization, creating AST tree and runs.
+// Package forth provides a simplified implementation of the Forth language.
+// It orchestrates tokenization, Abstract Syntax Tree (AST) construction, and script execution.
 package forth
 
 import (
+	"fmt"
 	"forth/internal/ast"
 	"forth/internal/interpreter"
 	"forth/internal/lexer"
 )
 
-// Run will execute the source code
+// Run executes the provided Forth source code.
 func Run(code string) error {
-	// Lexer tokenize the source code
-	lexer := lexer.New()
-	tokens, err := lexer.Tokenize(code)
-	if err != nil {
-		return err
+	if code == "" {
+		return fmt.Errorf("input code is empty")
 	}
 
-	// Ast creates a Abstract Syntax Tree
-	ast := ast.New()
-	astTree, err := ast.Build(tokens)
+	// Lexer tokenizes the source code.
+	lexerInstance := lexer.New()
+	tokens, err := lexerInstance.Tokenize(code)
 	if err != nil {
-		return err
+		return fmt.Errorf("lexer error: %w", err)
 	}
 
-	// the interpreter executes the Ast, running the script
-	interpreter := interpreter.New()
-	return interpreter.Execute(astTree);
+	// AST creates an Abstract Syntax Tree from tokens.
+	astInstance := ast.New()
+	astTree, err := astInstance.Build(tokens)
+	if err != nil {
+		return fmt.Errorf("AST build error: %w", err)
+	}
+
+	// The interpreter executes the AST.
+	interpreterInstance := interpreter.New()
+	if err := interpreterInstance.Execute(astTree); err != nil {
+		return fmt.Errorf("interpreter execution error: %w", err)
+	}
+
+	return nil
 }

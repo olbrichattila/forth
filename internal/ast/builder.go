@@ -23,7 +23,7 @@ type build struct {
 // Build convert tokens created with lexer to an AST tree
 func (p *build) Build(tokens []lexer.Token) (*Ast, error) {
 	p.tokens = tokens
-	Ast := &Ast{};
+	ast := &Ast{};
 
 	for {
 		if p.eof() {
@@ -38,18 +38,18 @@ func (p *build) Build(tokens []lexer.Token) (*Ast, error) {
 
 		if token.GetType() == lexer.TokenTypeFunction {
 			if n, ok := Node.(*NodeFunction); ok {
-				Ast.AddFunction(n.Name, Node)
+				ast.AddFunction(n.Name, Node)
 			}
 
 			p.pos++;
 			continue
 		}
 		
-		Ast.body = append(Ast.body, Node)
+		ast.body = append(ast.body, Node)
 		p.pos++
 	}
 
-	return Ast, nil
+	return ast, nil
 }
 
 func (p *build) eof() bool {
@@ -78,10 +78,11 @@ func (p *build) expect(tt lexer.TokenType) bool {
 }
 
 func (p *build) parse(token lexer.Token) (Node, error) {
+	tokenType := token.GetType()
 	parsers := getParsers()
-	if result, ok := parsers[token.GetType()]; ok {
+	if result, ok := parsers[tokenType]; ok {
 		return result(p, token)
 	}
 	
-	return nil, fmt.Errorf("token type %d not defined", token.GetType())
+	return nil, fmt.Errorf("unhandled token type: %d (%s)", tokenType, token.GetValue())
 }

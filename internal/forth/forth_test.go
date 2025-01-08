@@ -26,13 +26,15 @@ func (t *forthTestSuite) TearDownTest() {
 
 func (t *forthTestSuite) TestScriptResult() {
 	// Start capturing str output
-	t.capturer.StartCapture()
+	err := t.capturer.StartCapture()
+	t.Nil(err)
 	defer t.capturer.StopCapture()
 
 	// testing two words (functions), add, sub and print
-	err := Run(`:fna 37; 15 30 + . 50 * :fn 80 .; fn fn . fna .`)
+	err = Run(`:fna 37; 15 30 + . 50 * :fn 80 .; fn fn . fna .`)
 
-	output := t.capturer.StopCapture()
+	output, err := t.capturer.StopCapture()
+	t.Nil(err)
 	expectedResult := 
 `45
 80

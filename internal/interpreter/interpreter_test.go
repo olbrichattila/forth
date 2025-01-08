@@ -30,7 +30,8 @@ func (t *interpreterTestSuite) TearDownTest() {
 
 func (t *interpreterTestSuite) TestAstExecutes() {
 	// Start capturing str output
-	t.capturer.StartCapture()
+	err := t.capturer.StartCapture()
+	t.Nil(err)
 	defer t.capturer.StopCapture()
 
 	// Add 10 10 . (which prints 20)
@@ -49,8 +50,10 @@ func (t *interpreterTestSuite) TestAstExecutes() {
 	astNodes.AddFunction("testFunc", functionNode)
 	astNodes.AddNode(&ast.NodeName{Name: "testFunc"})
 
-	err := t.interpreter.Execute(astNodes)
-	output := t.capturer.StopCapture()
+	err = t.interpreter.Execute(astNodes)
+	t.Nil(err)
+	
+	output, err := t.capturer.StopCapture()
 
 	t.Nil(err)
 	// 20 and 50 printed

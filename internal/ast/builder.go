@@ -73,9 +73,22 @@ func (p *build) expect(tt lexer.TokenType) bool {
 func (p *build) parse(token lexer.Token) (Node, error) {
 	tokenType := token.GetType()
 	parsers := getParsers()
-	if result, ok := parsers[tokenType]; ok {
-		return result(p, token)
+
+	parser, ok := parsers[tokenType]
+	if !ok {
+		return nil, fmt.Errorf("unhandled token type: %d (%s)", tokenType, token.GetValue())
 	}
-	
-	return nil, fmt.Errorf("unhandled token type: %d (%s)", tokenType, token.GetValue())
+
+	switch fn := parser.(type) {
+	case parserFullFunc:
+		return fn(p, token)
+	case parserLexerFunc:
+		return fn(token)
+	case parserBuildFunc:
+		return fn(p)
+	case parserSimpleFunc:
+		return fn()
+	default:
+		return nil, fmt.Errorf("invalid parser function type for token type: %d (%s)", tokenType, token.GetValue())
+	}
 }

@@ -6,24 +6,27 @@ import (
 	"strconv"
 )
 
-type parserFunc = func(*build, lexer.Token) (Node, error)
+type parserFullFunc = func(*build, lexer.Token) (Node, error)
+type parserLexerFunc = func(lexer.Token) (Node, error)
+type parserBuildFunc = func(*build) (Node, error)
+type parserSimpleFunc = func() (Node, error)
 
-func getParsers() map[lexer.TokenType]parserFunc {
-	return map[lexer.TokenType]parserFunc{
-		lexer.TokenTypeNumber:   pushToStack,
-		lexer.TokenTypeAdd:      parseAdd,
-		lexer.TokenTypeSub:      parseSub,
-		lexer.TokenTypeMultiply: parseMultiply,
-		lexer.TokenTypeDup:      parseDup,
-		lexer.TokenTypeDrop:     parseDrop,
-		lexer.TokenTypeSwap:     parseSwap,
-		lexer.TokenTypePrint:    printResult,
-		lexer.TokenTypeFunction: functionToken,
-		lexer.TokenTypeName:     name,
+func getParsers() map[lexer.TokenType]interface{} {
+	return map[lexer.TokenType]interface{}{
+		lexer.TokenTypeNumber:   evalPushToStack,
+		lexer.TokenTypeAdd:      evalAdd,
+		lexer.TokenTypeSub:      evalSub,
+		lexer.TokenTypeMultiply: evalMultiply,
+		lexer.TokenTypeDup:      evalDup,
+		lexer.TokenTypeDrop:     evalDrop,
+		lexer.TokenTypeSwap:     evalSwap,
+		lexer.TokenTypePrint:    evalPrint,
+		lexer.TokenTypeFunction: evalFunction,
+		lexer.TokenTypeName:     evalName,
 	}
 }
 
-func pushToStack(_ *build, t lexer.Token) (Node, error) {
+func evalPushToStack(t lexer.Token) (Node, error) {
 	if v, err := strconv.Atoi(t.GetValue()); err == nil {
 		return &NodePush{Value: v}, nil
 	}
@@ -31,35 +34,35 @@ func pushToStack(_ *build, t lexer.Token) (Node, error) {
 	return nil, fmt.Errorf("incorrect token value %s", t.GetValue())
 }
 
-func parseAdd(_ *build, _ lexer.Token) (Node, error) {
+func evalAdd() (Node, error) {
 	return &NodeAdd{}, nil
 }
 
-func parseSub(_ *build, _ lexer.Token) (Node, error) {
+func evalSub() (Node, error) {
 	return &NodeSub{}, nil
 }
 
-func parseMultiply(_ *build, _ lexer.Token) (Node, error) {
+func evalMultiply() (Node, error) {
 	return &NodeMultiply{}, nil
 }
 
-func parseDup(_ *build, _ lexer.Token) (Node, error) {
+func evalDup() (Node, error) {
 	return &NodeDup{}, nil
 }
 
-func parseDrop(_ *build, _ lexer.Token) (Node, error) {
+func evalDrop() (Node, error) {
 	return &NodeDrop{}, nil
 }
 
-func parseSwap(_ *build, _ lexer.Token) (Node, error) {
+func evalSwap() (Node, error) {
 	return &NodeSwap{}, nil
 }
 
-func printResult(_ *build, _ lexer.Token) (Node, error) {
+func evalPrint() (Node, error) {
 	return &NodePrintResult{}, nil
 }
 
-func functionToken(p *build, _ lexer.Token) (Node, error) {
+func evalFunction(p *build) (Node, error) {
 	if !p.expect(lexer.TokenTypeName) {
 		return nil, fmt.Errorf("function : should be followed by a function name")
 	}
@@ -87,6 +90,6 @@ func functionToken(p *build, _ lexer.Token) (Node, error) {
 	return &NodeFunction{Name: nextToken.GetValue(), Body: body}, nil
 }
 
-func name(_ *build, t lexer.Token) (Node, error) {
+func evalName(t lexer.Token) (Node, error) {
 	return &NodeName{Name: t.GetValue()}, nil
 }

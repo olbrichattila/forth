@@ -1,10 +1,10 @@
 package ast
 
-// NodeAdd is an operator node to add the two number together at the top of the stack
+// NodeAdd represents an operator node that adds the top two numbers on the stack.
 type NodeAdd struct {
 }
 
-// GetType returns the node type
+// GetType returns the type of this node, which is NodeTypeAdd.
 func (*NodeAdd) GetType() NodeType {
 	return NodeTypeAdd
 }

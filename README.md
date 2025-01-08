@@ -4,7 +4,7 @@ This is a subset of the Forth language, written for a Coding KATA.
 
 The code has some test coverage, and I've split it into smaller chunks.
 
-It could be solved with less code. The reasoning behind this is to follow the methodology of how scripting languages work.
+It could be solved with less code by skipping AST tree. The reasoning behind this is to follow the methodology of how scripting languages work.
 
 ### The workflow.
 1. Lexer: Tokenizes the source code.

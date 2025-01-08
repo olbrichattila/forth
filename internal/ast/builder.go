@@ -57,10 +57,10 @@ func (p *build) eof() bool {
 }
 
 func (p *build) next() lexer.Token {
-	if p.eof() {
-        return lexer.Token{} // Return a zero-value token or handle appropriately
-    }
     p.pos++
+	if p.eof() {
+        return lexer.Token{}
+    }
     return p.tokens[p.pos]
 }
 

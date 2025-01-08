@@ -68,8 +68,12 @@ func functionToken(p *build, _ lexer.Token) (Node, error) {
 	nextToken := p.at();
 	
 	for {
-		if p.eof() || p.expect(lexer.TokenEndFunc) {
+		if p.expect(lexer.TokenEndFunc) {
 			break
+		}
+
+		if p.eof() {
+			return nil, fmt.Errorf("word (function) must end with semicolon")
 		}
 		
 		fnToken := p.at()

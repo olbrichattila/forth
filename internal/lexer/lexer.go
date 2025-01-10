@@ -97,7 +97,7 @@ func (t *tokenizer) isInt(s string) bool {
 }
 
 func (t *tokenizer) isName(s string) bool {
-	return (s >= "a" && s <= "z") || (s >= "A" && s <= "Z")
+	return (s >= "a" && s <= "z") || (s >= "A" && s <= "Z") || (s >= "0" && s <= "9")
 }
 
 func (t *tokenizer) ignoreCharacter(s string) bool {
